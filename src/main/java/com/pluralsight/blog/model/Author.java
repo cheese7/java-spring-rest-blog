@@ -12,83 +12,91 @@ import java.util.stream.Collectors;
 
 @Entity
 public class Author {
-    public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String firstname;
-    private String lastname;
-    private String username;
-    private String password;
+	public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String firstname;
+	private String lastname;
+	@JsonIgnore
+	private String username;
+	@JsonIgnore
+	private String password;
+	@OneToMany
+	private List<Post> posts;
 
-    public Author() {
-        super();
-    }
+	public Author() {
+		super();
+		posts = new ArrayList<>();
+	}
 
-    public Author(String username, String firstname, String lastname, String password) {
-        this();
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.username = username;
-        setPassword(password);
-    }
+	public Author(String username, String firstname, String lastname, String password) {
+		this();
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.username = username;
+		setPassword(password);
+	}
 
-    public void setPassword(String password) {
-         this.password = PASSWORD_ENCODER.encode(password);
-    }
+	public void setPassword(String password) {
+		this.password = PASSWORD_ENCODER.encode(password);
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public String getFirstName() {
-        return firstname;
-    }
+	public String getFirstName() {
+		return firstname;
+	}
 
-    public void setFirstName(String firstName) {
-        this.firstname = firstName;
-    }
+	public void setFirstName(String firstName) {
+		this.firstname = firstName;
+	}
 
-    public String getLastname() {
-        return lastname;
-    }
+	public String getLastname() {
+		return lastname;
+	}
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
 
-    public String getUsername() {
-        return username;
-    }
+	public String getUsername() {
+		return username;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        Author inputAuthor = (Author)obj;
-        if (!this.firstname.equals(inputAuthor.getFirstName())) {
-            System.out.println("firstname not equal");
-            return false;}
-        if (!this.lastname.equals(inputAuthor.getLastname())) {
-            System.out.println("lastname not equal");
-            return false;}
-        if (!this.username.equals(inputAuthor.getUsername())) {
-            System.out.println("username not equal");
-            return false;}
-        return true;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		Author inputAuthor = (Author) obj;
+		if (!this.firstname.equals(inputAuthor.getFirstName())) {
+			System.out.println("firstname not equal");
+			return false;
+		}
+		if (!this.lastname.equals(inputAuthor.getLastname())) {
+			System.out.println("lastname not equal");
+			return false;
+		}
+		if (!this.username.equals(inputAuthor.getUsername())) {
+			System.out.println("username not equal");
+			return false;
+		}
+		return true;
+	}
 
-    public List<Post> getPosts() {
-        return null;
-    }
+	public List<Post> getPosts() {
+		return posts;
+	}
 
-    public void addPost(Post post) {
-        return;
-    }
+	public void addPost(Post post) {
+		posts.add(post);
+	}
 }
